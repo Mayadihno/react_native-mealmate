@@ -1,37 +1,64 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import {
+  AntDesign,
+  Entypo,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+  Octicons,
+} from "@expo/vector-icons";
+import color from "@/theme/app.colors";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+export default function _layout() {
   return (
     <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
+      screenOptions={({ route }) => {
+        return {
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarIcon: ({ focused }) => {
+            let iconName;
+            if (route.name === "home") {
+              if (focused) {
+                iconName = (
+                  <Ionicons name="home" color={color.buttonBg} size={26} />
+                );
+              } else {
+                iconName = (
+                  <MaterialCommunityIcons
+                    color={"#8F8F8F"}
+                    name="home"
+                    size={26}
+                  />
+                );
+              }
+            } else if (route.name === "cart") {
+              iconName = (
+                <MaterialCommunityIcons
+                  name="cart"
+                  color={focused ? color.buttonBg : "#8F8F8F"}
+                  size={26}
+                />
+              );
+            } else if (route.name === "profile") {
+              if (focused) {
+                iconName = (
+                  <Entypo color={color.buttonBg} name="user" size={26} />
+                );
+              } else {
+                iconName = (
+                  <AntDesign name="user" size={26} color={"#8F8F8F"} />
+                );
+              }
+            }
+            return iconName;
+          },
+        };
+      }}
+    >
+      <Tabs.Screen name="home" />
+      <Tabs.Screen name="cart" />
+      <Tabs.Screen name="profile" />
     </Tabs>
   );
 }
